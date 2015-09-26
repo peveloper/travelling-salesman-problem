@@ -1,5 +1,7 @@
 package com.project_1.TSP_Parser;
 
+import java.io.PrintWriter;
+
 /**
  * Created by peveloper on 17/09/15.
  */
@@ -23,44 +25,18 @@ public class TSP_DistanceMatrix {
         }
     }
 
-    public int getNextFreeCell() {
-        int c =0;
-        for(int x=0; x<dimension; x++) {
-            for(int y=0; y<dimension; y++) {
-                if ((matrix[x][y] == 0.0 || matrix[x][y] == 0.0) && x!=y)  {
-                    return x + y + c;
-                }
-            }
-            c += dimension;
-        }
-        return -1;
-    }
-
-    public void addCoordinate(double distance) {
-        int c = 0;
-        for(int x=0; x<dimension; x++) {
-            for(int y=0; y<dimension; y++) {
-                int nextFreeCell = getNextFreeCell();
-                if (nextFreeCell != -1) {
-                    if (x + y + c == nextFreeCell) {
-                        matrix[x][y] = distance;
-                        return;
-                    }
-                }
-            }
-            c += dimension;
+    public void addDistance(double distance, int x, int y) {
+        if (x != y) {
+            matrix[x][y] = distance;
         }
     }
 
-    public void printMatrix() {
-        int rows = 0;
+    public void printMatrixToFile(PrintWriter writer) {
         for(int x=0; x<dimension; x++) {
             for(int y=0; y<dimension; y++) {
-                System.out.print(matrix[x][y] + ", ");
+                writer.print(matrix[x][y] + " ");
             }
-            System.out.println("\n");
-            rows++;
+            writer.print("\n");
         }
-        System.out.println(rows);
     }
 }
