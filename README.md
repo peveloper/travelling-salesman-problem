@@ -1,2 +1,2 @@
-# artificial-intelligence
-AI 2015 Projects
+# travelling-salesman-problem
+A simple Java implementation for the TSP
