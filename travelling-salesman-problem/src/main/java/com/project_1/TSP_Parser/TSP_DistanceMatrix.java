@@ -25,6 +25,10 @@ public class TSP_DistanceMatrix {
         }
     }
 
+    public double getDistance(int x, int y) {
+        return matrix[x][y];
+    }
+
     public void addDistance(double distance, int x, int y) {
         if (x != y) {
             matrix[x][y] = distance;

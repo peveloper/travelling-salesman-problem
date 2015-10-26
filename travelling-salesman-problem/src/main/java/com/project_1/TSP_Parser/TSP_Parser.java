@@ -64,6 +64,8 @@ public class TSP_Parser {
                 }
             }
 
+
+
             PrintWriter writer = new PrintWriter(outputFile, "UTF-8");  // Write Matrix into a txt file
             distanceMatrix.printMatrixToFile(writer);
             writer.close();
