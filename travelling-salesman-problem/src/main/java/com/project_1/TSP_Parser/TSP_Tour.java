@@ -19,8 +19,16 @@ public class TSP_Tour {
     }
 
     public void add(TSP_Coordinate coordinate) {
-        route.add(coordinate);
-        // TODO update new total distance
+        if (route.size() > 0) {
+            TSP_Coordinate start = route.get(0);
+            TSP_Coordinate end = route.get(route.size() - 1);
+            totalDistance -= matrix.getDistance(start.getId(), end.getId());
+            totalDistance += matrix.getDistance(coordinate.getId(), start.getId());
+            totalDistance += matrix.getDistance(coordinate.getId(), end.getId());
+            route.add(coordinate);
+        } else {
+            route.add(coordinate);
+        }
     }
 
     public double getDistance() {

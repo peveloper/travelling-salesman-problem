@@ -37,6 +37,7 @@ public class TSP_Parser {
 
             String currentLine;
             int startingLine = 0;
+            int identifier = 0;
             ArrayList<TSP_Coordinate> coordinates = new ArrayList<TSP_Coordinate>();
 
             br = new BufferedReader(new FileReader(inputFile));
@@ -44,9 +45,9 @@ public class TSP_Parser {
             while ((currentLine = br.readLine()) != null) {
                 if (startingLine >= 6 && !currentLine.equals("EOF")) { // First coordinate at line #6
                     coordinates.add(new TSP_Coordinate(Double.parseDouble(currentLine.split(" ")[1]),
-                            Double.parseDouble(currentLine.split(" ")[2])));
+                            Double.parseDouble(currentLine.split(" ")[2]), identifier));
                 }
-
+                identifier ++;
                 startingLine++;
             }
 
