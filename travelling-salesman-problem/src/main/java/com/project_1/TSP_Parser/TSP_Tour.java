@@ -5,33 +5,42 @@ import java.util.ArrayList;
 /**
  * Created by peveloper on 26/10/15.
  */
-public class TSP_Tour {
+public class TSP_Tour implements Comparable{
 
-    private ArrayList<TSP_Coordinate> route;
+    private ArrayList<Integer> route;
     private double totalDistance;
     private TSP_DistanceMatrix matrix;
 
 
     public TSP_Tour(TSP_DistanceMatrix matrix) {
         this.matrix = matrix;
-        route = new ArrayList<TSP_Coordinate>();
+        route = new ArrayList<Integer>();
         totalDistance = 0;
     }
 
-    public void add(TSP_Coordinate coordinate) {
+    public void add(int coordinate) {
         if (route.size() > 0) {
-            TSP_Coordinate start = route.get(0);
-            TSP_Coordinate end = route.get(route.size() - 1);
-            totalDistance -= matrix.getDistance(start.getId(), end.getId());
-            totalDistance += matrix.getDistance(coordinate.getId(), start.getId());
-            totalDistance += matrix.getDistance(coordinate.getId(), end.getId());
+            Integer start = route.get(0);
+            Integer end = route.get(route.size() - 1);
+            totalDistance -= matrix.getDistance(start, end);
+            totalDistance += matrix.getDistance(coordinate, start);
+            totalDistance += matrix.getDistance(coordinate, end);
             route.add(coordinate);
         } else {
             route.add(coordinate);
         }
     }
 
-    public double getDistance() {
-        return totalDistance;
+    public int compareTo(Object otherTour) {
+        if (otherTour instanceof TSP_Tour) {
+            return (int) (totalDistance - ((TSP_Tour) otherTour).getDistance());
+        } else
+            return 1;
+    }
+
+    public double getDistance() { return totalDistance; }
+
+    public int getSize() {
+        return route.size();
     }
 }

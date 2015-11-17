@@ -43,4 +43,8 @@ public class TSP_DistanceMatrix {
             writer.print("\n");
         }
     }
+
+    public double[][] getMatrix() {
+        return matrix;
+    }
 }
