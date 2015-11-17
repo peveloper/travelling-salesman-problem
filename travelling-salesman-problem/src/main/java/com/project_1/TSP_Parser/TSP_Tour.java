@@ -43,10 +43,10 @@ public class TSP_Tour implements Comparable{
         for (Integer i : route) {
             output += ((i+1) + "\n");
         }
-//        if (route.size() > 0){
-//            output += (route.get(0)+1);
-//        }
-        output += " distance: " + totalDistance;
+        if (route.size() > 0){
+            output += (route.get(0)+1) + "\n";
+        }
+        output += "\nTour Length: " + totalDistance;
         return output;
     }
 

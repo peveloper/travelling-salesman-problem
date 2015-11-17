@@ -15,16 +15,20 @@ public class TSP_NearestNeighbour {
         this.distanceMatrix = distanceMatrix;
     }
 
-    // Generate the NN tour
-    public TSP_Tour generateTour(ArrayList<TSP_Coordinate> cities) {
+    // Generate the NN tour from startNode start if != -1. Random otherwise.
+    public TSP_Tour generateTour(ArrayList<TSP_Coordinate> cities, int start) {
 
         Random r = new Random();
         TSP_Tour tour = new TSP_Tour(distanceMatrix);
         input = cities;
         int citiesSize = input.size() - 1;
 
-        int start = r.nextInt(citiesSize);
-        start = 0;
+        // Passing always the first as 0
+        if (start == -1) {
+            start = r.nextInt(input.size());
+        }
+
+        start = start - 1;
         tour.add(start);
         System.out.println(start);
 

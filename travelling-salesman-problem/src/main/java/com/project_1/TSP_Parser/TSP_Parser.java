@@ -31,8 +31,8 @@ public class TSP_Parser {
 
         BufferedReader br = null;
         String inputFile = "../ch130.tsp";
-        String outputFile = "distance_matrix.txt";
-        String outputNearestNeighbour = "nearest_neighbour_results.txt";
+        String outputFile = "results/distance_matrix.txt";
+        String outputNearestNeighbour = "results/nearest_neighbour_results.txt";
 
         try {
 
@@ -66,11 +66,19 @@ public class TSP_Parser {
                 }
             }
 
-            TSP_Tour nearestNeighbour_1 = new TSP_NearestNeighbour(distanceMatrix).generateTour(coordinates);
+
+            int NN1Start = 1;
+            TSP_Tour nearestNeighbour_1 = new TSP_NearestNeighbour(distanceMatrix).generateTour(coordinates, NN1Start);
+            int NN5Start = 5;
+            TSP_Tour nearestNeighbour_5 = new TSP_NearestNeighbour(distanceMatrix).generateTour(coordinates, NN5Start);
 
             // Write NN results into a txt file
             PrintWriter nearestNeighbourWriter = new PrintWriter(outputNearestNeighbour , "UTF-8");
+            nearestNeighbourWriter.println("NN solution for TSP problem on CH130 data set (start at " + NN1Start + ").\n");
             nearestNeighbourWriter.println(nearestNeighbour_1.toString());
+            nearestNeighbourWriter.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            nearestNeighbourWriter.println("NN solution for TSP problem on CH130 data set (start at " + NN5Start + ").\n");
+            nearestNeighbourWriter.println(nearestNeighbour_5.toString());
             nearestNeighbourWriter.close();
 
             // Write Matrix into a txt file
