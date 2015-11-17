@@ -38,9 +38,25 @@ public class TSP_Tour implements Comparable{
             return 1;
     }
 
+    public String toString() {
+        String output = "";
+        for (Integer i : route) {
+            output += ((i+1) + "\n");
+        }
+//        if (route.size() > 0){
+//            output += (route.get(0)+1);
+//        }
+        output += " distance: " + totalDistance;
+        return output;
+    }
+
     public double getDistance() { return totalDistance; }
 
     public int getSize() {
         return route.size();
+    }
+
+    public ArrayList<Integer> getTour(){
+        return route;
     }
 }

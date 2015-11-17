@@ -32,6 +32,7 @@ public class TSP_Parser {
         BufferedReader br = null;
         String inputFile = "../ch130.tsp";
         String outputFile = "distance_matrix.txt";
+        String outputNearestNeighbour = "nearest_neighbour_results.txt";
 
         try {
 
@@ -65,11 +66,17 @@ public class TSP_Parser {
                 }
             }
 
+            TSP_Tour nearestNeighbour_1 = new TSP_NearestNeighbour(distanceMatrix).generateTour(coordinates);
 
+            // Write NN results into a txt file
+            PrintWriter nearestNeighbourWriter = new PrintWriter(outputNearestNeighbour , "UTF-8");
+            nearestNeighbourWriter.println(nearestNeighbour_1.toString());
+            nearestNeighbourWriter.close();
 
-            PrintWriter writer = new PrintWriter(outputFile, "UTF-8");  // Write Matrix into a txt file
-            distanceMatrix.printMatrixToFile(writer);
-            writer.close();
+            // Write Matrix into a txt file
+            PrintWriter distanceMatrixWriter = new PrintWriter(outputFile, "UTF-8");
+            distanceMatrix.printMatrixToFile(distanceMatrixWriter);
+            distanceMatrixWriter.close();
 
         } catch (IOException e) {
             e.printStackTrace();
