@@ -1,19 +1,17 @@
-package com.project_1.TSP_Parser;
+package tsp;
 
 import java.io.PrintWriter;
 
-/**
- * Created by peveloper on 17/09/15.
- */
 
-public class TSP_DistanceMatrix {
+public class DistanceMatrix {
 
     private int dimension;
     private double[][] matrix;
 
-    public TSP_DistanceMatrix(int dimension){
+    public DistanceMatrix(int dimension){
         this.dimension = dimension;
         this.matrix = new double[dimension][dimension];
+        this.initMatrix();
 
     }
 
@@ -47,4 +45,9 @@ public class TSP_DistanceMatrix {
     public double[][] getMatrix() {
         return matrix;
     }
+
+    public int getSize() {
+        return dimension;
+    }
+
 }
