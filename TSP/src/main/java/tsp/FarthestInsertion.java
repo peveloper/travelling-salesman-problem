@@ -70,7 +70,7 @@ public class FarthestInsertion {
     }
 
     public int farthest(Tour subTour) {
-        double max = 0.0;
+        double max = 0;
         int pos = -1;
 
         for (int i = 0; i < distanceMatrix.getSize(); i++) {

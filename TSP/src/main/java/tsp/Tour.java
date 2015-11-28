@@ -13,34 +13,34 @@ public class Tour {
     public Tour(DistanceMatrix matrix) {
         this.matrix = matrix;
         route = new ArrayList<Integer>();
-        totalDistance = 0.0;
+        totalDistance = 0;
     }
 
-    public void push(int coordinate) {
+    public void push(int city) {
         if (route.size() > 0) {
             Integer start = route.get(0);
             Integer end = route.get(route.size() - 1);
             totalDistance -= matrix.getDistance(start, end);
-            totalDistance += matrix.getDistance(coordinate, start);
-            totalDistance += matrix.getDistance(coordinate, end);
-            route.add(coordinate);
+            totalDistance += matrix.getDistance(city, start);
+            totalDistance += matrix.getDistance(city, end);
+            route.add(city);
         } else {
-            route.add(coordinate);
+            route.add(city);
         }
     }
 
-    public void addAtPosition(int i, int coordinate) {
+    public void addAtPosition(int i, int city) {
         int j = (i+1) % route.size();
         double dij = matrix.getDistance(route.get(i), route.get(j));
-        double dik = matrix.getDistance(route.get(i), coordinate);
-        double dkj = matrix.getDistance(coordinate, route.get(j));
+        double dik = matrix.getDistance(route.get(i), city);
+        double dkj = matrix.getDistance(city, route.get(j));
         totalDistance -= dij;
         totalDistance += dik;
         totalDistance += dkj;
-        route.add(i+1, coordinate);
+        route.add(i+1, city);
     }
 
-    public void minAddCost(int coordinate) {
+    public void minAddCost(int city) {
 
         double minCost = Double.POSITIVE_INFINITY;
         int pos = -1;
@@ -49,23 +49,29 @@ public class Tour {
         for(int i=0; i < route.size(); i++) {
             j= (i+1) % route.size();
             double dij = matrix.getDistance(route.get(i), route.get(j));
-            double dik = matrix.getDistance(route.get(i), coordinate);
-            double dkj = matrix.getDistance(coordinate, route.get(j));
+            double dik = matrix.getDistance(route.get(i), city);
+            double dkj = matrix.getDistance(city, route.get(j));
             if (dik + dkj - dij  < minCost) {
                 minCost = dik + dkj - dij;
                 pos = i;
             }
         }
 
-        this.addAtPosition(pos, coordinate);
+        this.addAtPosition(pos, city);
+    }
+    
+    public void addAll(ArrayList<Integer> cities) {
+        for(int city: cities) {
+            this.push(city);
+        }
     }
 
-    public double minDistanceFromTour(int coordinate) {
+    public double minDistanceFromTour(int city) {
 
         double minCost = Double.POSITIVE_INFINITY;
 
         for(int i=0; i < route.size(); i++) {
-            double dik = matrix.getDistance(route.get(i), coordinate);
+            double dik = matrix.getDistance(route.get(i), city);
             if (dik > minCost) {
                 minCost = dik;
             }

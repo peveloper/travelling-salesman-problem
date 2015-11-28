@@ -6,11 +6,11 @@ import java.io.PrintWriter;
 public class DistanceMatrix {
 
     private int dimension;
-    private double[][] matrix;
+    private double [][] matrix;
 
     public DistanceMatrix(int dimension){
         this.dimension = dimension;
-        this.matrix = new double[dimension][dimension];
+        this.matrix = new double [dimension][dimension];
         this.initMatrix();
 
     }

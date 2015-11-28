@@ -39,13 +39,15 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
         String filePath = args[0];
         inputFile = filePath.split("/")[filePath.split("/").length-1];
         FileParser fileParser = new FileParser(filePath);
         distanceMatrix = fileParser.parseTSPFile();
-        printMatrixToFile(distanceMatrix);
         problemInstances.put("NearestNeighbour", new NearestNeighbour(distanceMatrix).generateTour(-1));
         problemInstances.put("FarthestInsertion", new FarthestInsertion(distanceMatrix).generateTour());
+        problemInstances.put("TwoOpt", new TwoOpt(solve("FarthestInsertion"), distanceMatrix).generateTour());
+
         JSONParser jsonParser = new JSONParser();
 
         try {
@@ -53,6 +55,7 @@ public class Main {
             Object configObject = jsonParser.parse(new FileReader("src/main/resources/config.json"));
             JSONObject config = (JSONObject) configObject;
             resultsDirectory = (String) config.get("path_results");
+            printMatrixToFile(distanceMatrix);
             JSONArray algorithms = (JSONArray) config.get("algorithms");
             JSONArray problems = (JSONArray) config.get("problems");
             ArrayList<String> resultFiles = new ArrayList<String>();
@@ -84,6 +87,9 @@ public class Main {
                 writer.println(solutionInstances.get(algorithm).toString());
                 writer.close();
             }
+
+            long elapsedTime = System.currentTimeMillis() - start;
+            System.out.println("Elapsed Running Time: " + elapsedTime + " ms.");
 
         } catch (Exception e) {
             e.printStackTrace();

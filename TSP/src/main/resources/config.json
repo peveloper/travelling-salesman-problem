@@ -13,7 +13,8 @@
   ],
   "algorithms": [
     "NearestNeighbour",
-    "FarthestInsertion"
+    "FarthestInsertion",
+    "TwoOpt"
   ],
   "path_results" : "../results/"
 }
