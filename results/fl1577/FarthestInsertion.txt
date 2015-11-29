@@ -1579,4 +1579,4 @@ FarthestInsertion solution for TSP problem on fl1577.tsp
 1295
 1206
 
-Tour Length: 27493.745963350426
+Tour Length: 26435

@@ -44,7 +44,7 @@ public class Main {
         inputFile = filePath.split("/")[filePath.split("/").length-1];
         FileParser fileParser = new FileParser(filePath);
         distanceMatrix = fileParser.parseTSPFile();
-        problemInstances.put("NearestNeighbour", new NearestNeighbour(distanceMatrix).generateTour(-1));
+        problemInstances.put("NearestNeighbour", new NearestNeighbour(distanceMatrix).generateTour(1));
         problemInstances.put("FarthestInsertion", new FarthestInsertion(distanceMatrix).generateTour());
         problemInstances.put("TwoOpt", new TwoOpt(solve("FarthestInsertion"), distanceMatrix).generateTour());
 

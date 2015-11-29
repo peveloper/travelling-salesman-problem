@@ -27,7 +27,7 @@ public class FileParser {
             ArrayList<City> coordinates = new ArrayList<City>();
             br = new BufferedReader(new FileReader(inputFile));
 
-            // TODO-FIX try to search for the 1st digit instead of verify that the 1st is a digit (bug with rat783)
+            // TODO-FIX try to search for the 1st digit instead of verify that the 1st is a digit
 
             while ((currentLine = br.readLine()) != null) {
                 if (Character.isDigit(currentLine.charAt(0)) && !currentLine.equals("EOF")) {

@@ -132,4 +132,4 @@ FarthestInsertion solution for TSP problem on ch130.tsp
 85
 66
 
-Tour Length: 6766.30911588334
+Tour Length: 6705
