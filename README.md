@@ -9,7 +9,7 @@ Once compiled
 Will produce the output in [results](https://github.com/peveloper/travelling-salesman-problem/tree/master/results)
 
 ## TODO
-- Implement 2-OPT or similar.
+- ~~Implement 2-OPT or similar.~~ **Done**
 - Implement Simulated Annealing
 
 ## Goal
