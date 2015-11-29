@@ -130,6 +130,5 @@ NearestNeighbour solution for TSP problem on ch130.tsp
 123
 101
 82
-1
 
 Tour Length: 7511

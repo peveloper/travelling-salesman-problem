@@ -85,9 +85,6 @@ public class Tour {
         for (Integer i : route) {
             output += ((i+1) + "\n");
         }
-        if (route.size() > 0){
-            output += (route.get(0)+1) + "\n";
-        }
         output += "\nTour Length: " + getTotalDistance();
         return output;
     }

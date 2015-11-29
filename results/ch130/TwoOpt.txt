@@ -130,6 +130,5 @@ TwoOpt solution for TSP problem on ch130.tsp
 90
 125
 85
-66
 
 Tour Length: 6438
