@@ -72,8 +72,8 @@ FarthestInsertion solution for TSP problem on ch130.tsp
 73
 65
 81
-87
 12
+87
 95
 79
 38
@@ -99,10 +99,10 @@ FarthestInsertion solution for TSP problem on ch130.tsp
 13
 96
 23
-40
 47
-22
+40
 37
+22
 33
 21
 93
@@ -131,4 +131,4 @@ FarthestInsertion solution for TSP problem on ch130.tsp
 125
 85
 
-Tour Length: 6705
+Tour Length: 6759

@@ -44,11 +44,10 @@ public class FileParser {
 
             for (int x=0; x < coordinates.size(); x++) {
                 for (int y=0; y< coordinates.size(); y++) {
-                    double distance =
-                            Math.sqrt(
-                                    Math.pow((coordinates.get(x).getX() - coordinates.get(y).getX()), 2) +
-                                            Math.pow((coordinates.get(x).getY() - coordinates.get(y).getY()), 2)
-                            );
+                    int distance = (int) Math.round(
+                            Math.sqrt(Math.pow((coordinates.get(x).getX() - coordinates.get(y).getX()), 2) +
+                                      Math.pow((coordinates.get(x).getY() - coordinates.get(y).getY()), 2)
+                            ));
 
                     distanceMatrix.addDistance(distance, x, y);
                 }

@@ -6,11 +6,11 @@ import java.io.PrintWriter;
 public class DistanceMatrix {
 
     private int dimension;
-    private double [][] matrix;
+    private int [][] matrix;
 
     public DistanceMatrix(int dimension){
         this.dimension = dimension;
-        this.matrix = new double [dimension][dimension];
+        this.matrix = new int [dimension][dimension];
         this.initMatrix();
 
     }
@@ -18,16 +18,16 @@ public class DistanceMatrix {
     public void initMatrix() {
         for(int x=0; x<dimension; x++) {
             for(int y=0; y<dimension; y++) {
-                matrix[x][y] = 0.0;
+                matrix[x][y] = 0;
             }
         }
     }
 
-    public double getDistance(int x, int y) {
+    public int getDistance(int x, int y) {
         return matrix[x][y];
     }
 
-    public void addDistance(double distance, int x, int y) {
+    public void addDistance(int distance, int x, int y) {
         if (x != y) {
             matrix[x][y] = distance;
         }
@@ -42,7 +42,7 @@ public class DistanceMatrix {
         }
     }
 
-    public double[][] getMatrix() {
+    public int[][] getMatrix() {
         return matrix;
     }
 

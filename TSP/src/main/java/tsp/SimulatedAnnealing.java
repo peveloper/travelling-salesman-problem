@@ -6,11 +6,20 @@ public class SimulatedAnnealing {
 
     private Tour tour;
     private DistanceMatrix distanceMatrix;
+    private TwoOpt twoOpt;
+    private Random r;
+    private final double TIME_LIMIT = 180.0;
+
+    private double temperature = 0.2;
+    private final double coolingRate = 0.95;
+
 
 
     public SimulatedAnnealing(Tour tour, DistanceMatrix distanceMatrix) {
         this.tour = tour;
         this.distanceMatrix = distanceMatrix;
+        r = new Random(179142946891462l);
+        twoOpt = new TwoOpt(tour, distanceMatrix);
     }
 
     public static double acceptanceProbability(int energy, int newEnergy, double temperature) {
@@ -23,67 +32,78 @@ public class SimulatedAnnealing {
     }
 
     public Tour generateTour() {
+        long now = System.nanoTime();
 
-        double temperature = 1.0e+6;
-        double coolingRate = 0.99; //limit 0.00001
+        twoOpt.setTour(tour);
 
-        Tour currentSolution = new Tour(distanceMatrix);
-        currentSolution.addAll(tour.getTour());
+        Tour currentSolution = twoOpt.generateTour(false);
 
         Tour bestSoFar = new Tour(distanceMatrix);
         bestSoFar.addAll(tour.getTour());
 
-        Random r = new Random(175375829147462l);
+        int bestDistance = bestSoFar.getTotalDistance();
+        int currentDistance = bestDistance;
 
+        while (true) {
 
-        while (temperature > 1) {
-            Tour newSolution = new Tour(distanceMatrix);
-            newSolution.addAll(tour.getTour());
+            System.out.println("Temperature: " + temperature + " BestSoFar: " + bestDistance
+                             + " Current: " + currentDistance);
 
-            int tourPos1 = r.nextInt(newSolution.getSize());
-            int tourPos2 = r.nextInt(newSolution.getSize());
-
-            if(tourPos1 == tourPos2) {
-                tourPos2 = (tourPos2 + 1) % newSolution.getSize();
+            if (((System.nanoTime()) - now) * Math.pow(10, -9) > TIME_LIMIT) {
+                break;
             }
 
-            if(tourPos2 < tourPos1) {
-                int temp = tourPos2;
-                tourPos2 = tourPos1;
-                tourPos1 = temp;
+            int i = 0;
+            while( i < 50 * currentSolution.getSize()) {
+
+                Tour newSolution = new Tour(distanceMatrix);
+                newSolution.addAll(tour.getTour());
+
+                int tourPos1 = r.nextInt(newSolution.getSize());
+                int tourPos2 = r.nextInt(newSolution.getSize());
+
+                if (tourPos1 == tourPos2) {
+                    tourPos2 = (tourPos2 + 1) % newSolution.getSize();
+                }
+
+                if (tourPos2 < tourPos1) {
+                    int temp = tourPos2;
+                    tourPos2 = tourPos1;
+                    tourPos1 = temp;
+                }
+
+                int delta = twoOpt.computeGain(tourPos1, tourPos2);
+
+                if (delta < 0) {
+                    twoOpt.swap(tourPos1, tourPos2);
+                    currentDistance = currentSolution.getTotalDistance();
+                    if (currentDistance < bestDistance) {
+                        bestSoFar = new Tour(distanceMatrix);
+                        bestSoFar.addAll(currentSolution.getTour());
+                        bestDistance = currentDistance;
+                    }
+                } else {
+                    double newRandom = r.nextInt(101)/100.0;
+
+                    if (Math.exp(-delta/temperature) > newRandom) {
+                        twoOpt.swap(tourPos1, tourPos2);
+                        currentDistance = currentSolution.getTotalDistance();
+                    }
+
+                }
+
+                i++;
             }
 
-            int citySwap1 = newSolution.get(tourPos1);
-            int citySwap2 = newSolution.get(tourPos2);
-
-            newSolution.getTour().set(tourPos2, citySwap1);
-            newSolution.getTour().set(tourPos1, citySwap2);
-
-            int currentEnergy = tour.getTotalDistance();
-            int neighbourEnergy = newSolution.getTotalDistance();
-
-
-            int diff = neighbourEnergy - currentEnergy;
-
-            if (diff < 0 || acceptanceProbability(currentEnergy, neighbourEnergy, temperature) > Math.random())
-
-            if (acceptanceProbability(currentEnergy, neighbourEnergy, temperature) > Math.random()) {
-                currentSolution = new Tour(distanceMatrix);
-                currentSolution.addAll(newSolution.getTour());
-                currentSolution.getTotalDistance();
-            }
-
-            // Keep track of the best solution found
-            if (currentSolution.getTotalDistance() < bestSoFar.getTotalDistance()) {
-                bestSoFar = new Tour(distanceMatrix);
-                bestSoFar.addAll(currentSolution.getTour());
-            }
-
-            temperature *= 1-coolingRate;
-
+            temperature = coolingRate * temperature;
         }
 
+        twoOpt.setTour(bestSoFar);
 
-        return bestSoFar;
+        twoOpt.generateTour(false);
+
+        tour = twoOpt.getTour();
+
+        return tour;
     }
 }

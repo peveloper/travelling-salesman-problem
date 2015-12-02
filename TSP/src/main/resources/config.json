@@ -13,8 +13,7 @@
   ],
   "algorithms": [
     "NearestNeighbour",
-    "FarthestInsertion",
-    "TwoOpt"
+    "SimulatedAnnealing"
   ],
   "path_results" : "../results/"
 }

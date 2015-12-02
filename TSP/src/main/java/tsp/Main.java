@@ -45,8 +45,9 @@ public class Main {
         FileParser fileParser = new FileParser(filePath);
         distanceMatrix = fileParser.parseTSPFile();
         problemInstances.put("NearestNeighbour", new NearestNeighbour(distanceMatrix).generateTour(1));
-        problemInstances.put("FarthestInsertion", new FarthestInsertion(distanceMatrix).generateTour());
-        problemInstances.put("TwoOpt", new TwoOpt(solve("FarthestInsertion"), distanceMatrix).generateTour());
+//        problemInstances.put("FarthestInsertion", new FarthestInsertion(distanceMatrix).generateTour());
+//        problemInstances.put("TwoOpt", new TwoOpt(solve("NearestNeighbour"), distanceMatrix).generateTour());
+        problemInstances.put("SimulatedAnnealing", new SimulatedAnnealing((solve("NearestNeighbour")), distanceMatrix).generateTour());
 
         JSONParser jsonParser = new JSONParser();
 

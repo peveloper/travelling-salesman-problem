@@ -44,7 +44,7 @@ func read_answer(filename string) (path []int) {
 
 	buf, err2 := ioutil.ReadAll(f)
 	if err2 != nil { log.Fatal(err2) }
-
+	
 	str := string(buf)
 	str = strings.Replace(str, "\n", " ", -1)
 	str = strings.Replace(str, "\t", " ", -1)
@@ -66,7 +66,7 @@ func read_tsp(filename string) (nodes []Node) {
 
 	buf, err2 := ioutil.ReadAll(f)
 	if err2 != nil { log.Fatal(err2) }
-
+	
 	str := string(buf)
 	lines := strings.Split(str, "\n")
 	for i, line := range lines {
@@ -108,32 +108,19 @@ func xor(a, b bool) bool {
 func draw_line(rgba *image.RGBA, x, y, x2, y2 float64) {
 	//x_less, y_less := x < x2, y < y2
 	y_less := y < y2
-  x_less := x < x2
 	dx, dy := x2 - x, y2 - y
 	length := math.Sqrt(math.Pow(dx, 2) + math.Pow(dy, 2))
 	ddx, ddy := dx / length, dy / length
 
-  if ddy != 0 {
-  	ix := x
-  	for iy := y; !xor(iy < y2, y_less); iy += ddy {
-  		ix += ddx
-  		//for ix := x; !xor(ix < x2, x_less); ix += ddx {
-  			//fmt.Println(ix, iy, ddx, ddy, length, dx, dy)
-  			//os.Exit(1)
-  		rgba.Set(int(ix), int(iy), color.RGBA{255, 0, 0, 255})
-  		//}
-  	}
-  } else {
-    iy := y
-  	for ix := x; !xor(ix < x2, x_less); ix += ddx {
-  		iy += ddy
-  		//for ix := x; !xor(ix < x2, x_less); ix += ddx {
-  			//fmt.Println(ix, iy, ddx, ddy, length, dx, dy)
-  			//os.Exit(1)
-  		rgba.Set(int(ix), int(iy), color.RGBA{255, 0, 0, 255})
-  		//}
-  	}
-  }
+	ix := x
+	for iy := y; !xor(iy < y2, y_less); iy += ddy {
+		ix += ddx
+		//for ix := x; !xor(ix < x2, x_less); ix += ddx {
+			//fmt.Println(ix, iy, ddx, ddy, length, dx, dy)
+			//os.Exit(1)
+		rgba.Set(int(ix), int(iy), color.RGBA{255, 0, 0, 255})
+		//}
+	}
 
 }
 
@@ -153,7 +140,7 @@ func calculate_distance(nodes []Node, path []int) {
 		visited[n2.index] = true
 	}
 	length += dist(node_map[path[len(path)-1]], node_map[path[0]])
-
+	
 	for _, node := range nodes {
 		if _, ok := visited[node.index]; !ok {
 			log.Fatal(errors.New("not all nodes visited"))
@@ -176,15 +163,16 @@ func draw(outfile string, nodes []Node, path []int) {
 	f, err := os.Create(outfile)
 	if err != nil { log.Fatal(err) }
 	img := image.NewRGBA(image.Rect(0, 0, *width, *height))
-
+	
 	fill(img)
+
 	for _, node := range nodes {
 		draw_x, draw_y := node.x / max_x * float64(*width), node.y / max_y * float64(*height)
 		draw_square(img, draw_x, draw_y, 3)
 	}
 
 	for i := range path {
-
+		
 		index, index_next := path[i], path[(i+1) % len(path)]
 
 		node := node_map[index]
@@ -193,6 +181,7 @@ func draw(outfile string, nodes []Node, path []int) {
 		draw_x_next, draw_y_next := node_next.x / max_x * float64(*width), node_next.y / max_y * float64(*height)
 		draw_line(img, draw_x, draw_y, draw_x_next, draw_y_next)
 	}
+
 	//output
 	err_encode := png.Encode(f, img)
 	if err_encode != nil { log.Fatal(err_encode) }
@@ -205,4 +194,5 @@ func main() {
 	path := read_answer(*answer_file)
 	draw(*outfile, nodes, path)
 	calculate_distance(nodes, path)
+	fmt.Println("written to ", *outfile)
 }

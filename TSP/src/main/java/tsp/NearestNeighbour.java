@@ -43,7 +43,7 @@ public class NearestNeighbour {
 
         //Flag array for visited cities. 0 if unvisited, 1 if visited.
         int[] visited = new int[d.getSize()];
-        double[] distances = d.getMatrix()[index];
+        int [] distances = d.getMatrix()[index];
         int nearest = -1;
 
         for(int j = 0; j < visited.length; j++){

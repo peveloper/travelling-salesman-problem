@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Tour {
 
     private ArrayList<Integer> route;
-    private double distanceSoFar;
+    private int distanceSoFar;
     private DistanceMatrix distanceMatrix;
 
 
@@ -15,6 +15,14 @@ public class Tour {
         route = new ArrayList<Integer>();
         distanceSoFar = 0;
     }
+
+    public void initTour() {
+        for(int i=0; i < distanceMatrix.getSize(); i++) {
+            route.add(0);
+        }
+    }
+
+
 
     public void push(int city) {
         if (route.size() > 0) {
@@ -66,18 +74,18 @@ public class Tour {
         }
     }
 
-    public double minDistanceFromTour(int city) {
+    public int minDistanceFromTour(int city) {
 
         double minCost = Double.POSITIVE_INFINITY;
 
         for(int i=0; i < route.size(); i++) {
-            double dik = distanceMatrix.getDistance(route.get(i), city);
+            int dik = distanceMatrix.getDistance(route.get(i), city);
             if (dik > minCost) {
                 minCost = dik;
             }
         }
 
-        return minCost;
+        return (int) minCost;
     }
 
     public String toString() {
@@ -89,7 +97,7 @@ public class Tour {
         return output;
     }
 
-    public double getDistanceSoFar() { return distanceSoFar; }
+    public int getDistanceSoFar() { return distanceSoFar; }
 
     public int getSize() {
         return route.size();
@@ -116,10 +124,11 @@ public class Tour {
     }
 
     public int getTotalDistance() {
-        int distance = 0;
-        for (int i = 0; i < route.size(); i++) {
-            distance += distanceMatrix.getMatrix()[route.get(i)][route.get((i+1) % route.size())];
+        int cost = 0;
+        for(int i = 1; i < route.size(); i++) {
+            cost += distanceMatrix.getMatrix()[route.get(i-1)][route.get(i)];
         }
-        return distance;
+        cost += distanceMatrix.getMatrix()[route.get(route.size()-1)][route.get(0)];
+        return cost;
     }
 }
