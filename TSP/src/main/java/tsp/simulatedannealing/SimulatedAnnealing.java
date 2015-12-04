@@ -1,4 +1,4 @@
-package tsp;
+package tsp.simulatedannealing;
 
 import java.util.Random;
 
@@ -20,15 +20,6 @@ public class SimulatedAnnealing {
         this.distanceMatrix = distanceMatrix;
         r = new Random(179142946891462l);
         twoOpt = new TwoOpt(tour, distanceMatrix);
-    }
-
-    public static double acceptanceProbability(int energy, int newEnergy, double temperature) {
-        // If the new solution is better, accept it
-        if (newEnergy < energy) {
-            return 1.0;
-        }
-        // If the new solution is worse, calculate an acceptance probability
-        return Math.exp(-(newEnergy - energy) / temperature);
     }
 
     public Tour generateTour() {

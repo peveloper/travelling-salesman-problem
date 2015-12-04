@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Draw TSP</title>
+    <script type="text/javascript" src="js/three.min.js"></script>
+</head>
+<body>
+    <label for="fileProblem">TSP Problem</label>
+    <input type="file" id="fileProblem" name="fileProblem" />
+
+    <label for="fileTour">Tour</label>
+    <input type="file" id="fileTour" name="fileTour" />
+
+    <button id="renderBtn" type="button">Render</button>
+
+    <div id="glcanvas">
+    </div>
+
+    <script type="text/javascript">
+        // rendering resolution
+        var WIDTH = 720;
+        var HEIGHT = 720;
+
+        // set camera attributes
+        var VIEW_ANGLE = 45,
+                ASPECT = WIDTH / HEIGHT,
+                NEAR = 0.1,
+                FAR = 10000;
+
+        var problemStr = null;
+        var tourStr = null;
+        var problem = null;
+        var spanX = null;
+        var spanY = null;
+        var tour = null;
+
+        window.onload = function() {
+            /* file dialog */
+            function handleFileProblem(evt) {
+                var file = evt.target.files[0]; // FileList object
+
+                var reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function() {
+                    return function(e) {
+                        problem = {};
+                        problemStr = (e.target.result);
+
+                        var maxX = null;
+                        var maxY = null;
+
+                        // read problem
+                        var lines = problemStr.split('\n');
+                        var coord_section = false;
+                        for (var i = 0; i < lines.length; i++) {
+                            lines[i] = lines[i].trim();
+                            if (lines[i] == 'NODE_COORD_SECTION') {
+                                coord_section = true;
+                                continue;
+                            }
+
+                            if (coord_section) {
+                                var coords = lines[i].split(' ');
+                                var index = parseInt(coords[0]);
+                                var x = parseFloat(coords[1]);
+                                var y = parseFloat(coords[2]);
+
+                                if (maxX == null || x > maxX)
+                                    maxX = x;
+                                if (maxY == null || y > maxY)
+                                    maxY = y;
+
+                                problem[index] = new THREE.Vector3(x, y, 0.0);
+                            }
+                        }
+
+                        spanX = Math.abs(maxX);
+                        spanY = Math.abs(maxY);
+                    };
+                })();
+
+                // Read in the image file as a data URL.
+                reader.readAsText(file);
+            }
+
+            function handleFileTour(evt) {
+                var file = evt.target.files[0]; // FileList object
+
+                var reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function() {
+                    return function(e) {
+                        tour = [];
+
+                        tourStr = (e.target.result);
+
+                        // read problem
+                        var nodes = tourStr.split(' ');
+                        for (var i = 0; i < nodes.length; i++) {
+                            var index = parseInt(nodes[i]);
+
+                            tour.push(index);
+                        }
+                    };
+                })();
+
+                // Read in the image file as a data URL.
+                reader.readAsText(file);
+            }
+
+            document.getElementById('fileProblem').addEventListener('change', handleFileProblem, false);
+            document.getElementById('fileTour').addEventListener('change', handleFileTour, false);
+
+            /* WEBGL */
+            var container = document.getElementById('glcanvas');
+
+            var renderer = new THREE.WebGLRenderer();
+
+            var camera = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, WIDTH / 2, WIDTH / - 2, NEAR, FAR );
+
+            var scene = new THREE.Scene();
+
+            scene.add(camera);
+
+            camera.position.z = 300;
+
+            renderer.setPixelRatio( window.devicePixelRatio );
+            renderer.setSize(WIDTH, HEIGHT);
+
+            container.appendChild(renderer.domElement);
+
+
+            document.getElementById('renderBtn').addEventListener('click', function () {
+                if (problem != null) {
+                    var dotGeometry = new THREE.Geometry();
+                    var dotMaterial = new THREE.PointsMaterial( { size: 4, sizeAttenuation: false } );
+                    var dot = new THREE.Points( dotGeometry, dotMaterial );
+
+                    dot.translateX(WIDTH / -2);
+                    dot.translateY(HEIGHT / -2);
+                    dot.scale.x = 1.0 / spanX * (WIDTH);
+                    dot.scale.y = 1.0 / spanY * (HEIGHT);
+
+                    for (var index in problem) {
+                        if (problem.hasOwnProperty(index)) {
+                            dotGeometry.vertices.push(problem[index]);
+                        }
+                    }
+
+                    dotGeometry.verticesNeedUpdate = true;
+                    dot.matrixWorldNeedsUpdate = true;
+
+                    scene.add(dot);
+
+                    var line = null;
+                    if (tour != null) {
+                        // geometry
+                        var geometry = new THREE.BufferGeometry();
+
+                        // attributes
+                        var positions = new Float32Array((tour.length + 1) * 3); // 3 vertices per point
+                        geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+                        // material
+                        var material = new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 1});
+
+                        // line
+                        line = new THREE.Line(geometry, material);
+                        scene.add(line);
+
+                        var idx = 0;
+                        for (var i = 0; i < tour.length; i++) {
+                            var pos = line.geometry.attributes.position.array;
+
+                            pos[idx++] = problem[tour[i]].x;
+                            pos[idx++] = problem[tour[i]].y;
+                            pos[idx++] = problem[tour[i]].z;
+                        }
+                        pos[idx++] = problem[tour[0]].x;
+                        pos[idx++] = problem[tour[0]].y;
+                        pos[idx++] = problem[tour[0]].z;
+
+                        // drawcalls
+                        drawCount = tour.length + 1;
+                        geometry.setDrawRange(0, drawCount);
+
+                        line.translateX(WIDTH / -2);
+                        line.translateY(HEIGHT / -2);
+                        line.scale.x = 1.0 / spanX * (WIDTH);
+                        line.scale.y = 1.0 / spanY * (HEIGHT);
+                    }
+
+//                    var gl = renderer.context;
+//                    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+                    renderer.render(scene, camera);
+
+                    scene.remove(dot);
+
+                    scene.remove(line);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

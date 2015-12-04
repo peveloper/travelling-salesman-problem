@@ -1,4 +1,4 @@
-package tsp;
+package tsp.simulatedannealing;
 
 public class City {
 

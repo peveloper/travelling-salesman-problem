@@ -1,4 +1,4 @@
-package tsp;
+package tsp.simulatedannealing;
 
 
 import org.json.simple.JSONArray;

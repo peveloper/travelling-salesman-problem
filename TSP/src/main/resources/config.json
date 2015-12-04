@@ -1,20 +1,17 @@
 {
-  "problems": [
-    "ch130.tsp",
-    "d198.tsp",
-    "eil76.tsp",
-    "fl1577.tsp",
-    "kroa100.tsp",
-    "lin318.tsp",
-    "pcb442.tsp",
-    "pr439.tsp",
-    "rat783.tsp",
-    "u1060.tsp"
-  ],
-  "algorithms": [
-    "NearestNeighbour",
-    "SimulatedAnnealing"
-  ],
+  "problems": {
+    "0": ["ch130.tsp", "6110"],
+    "1": ["d198.tsp", "15780"],
+    "2": ["eil76.tsp", "538"],
+    "3": ["fl1577.tsp", "22249"],
+    "4": ["kroA100.tsp", "21282"],
+    "5": ["lin318.tsp", "42029"],
+    "6": ["pcb442.tsp", "50778"],
+    "7": ["pr439.tsp", "107217"],
+    "8": ["rat783.tsp", "8806"],
+    "9": ["u1060.tsp", "224094"]
+  },
   "path_results" : "../results/"
 }
+
 

@@ -1,4 +1,4 @@
-package tsp;
+package tsp.simulatedannealing;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

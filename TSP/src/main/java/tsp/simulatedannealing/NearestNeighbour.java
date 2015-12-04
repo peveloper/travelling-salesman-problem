@@ -1,4 +1,4 @@
-package tsp;
+package tsp.simulatedannealing;
 
 import java.util.ArrayList;
 import java.util.Random;
