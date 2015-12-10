@@ -4,7 +4,7 @@ A simple Java implementation for the TSP using the ant-colony system.
 ## Usage
 Once compiled
 ```
-./Main <problem_filename.tsp>
+$ java Main <problem_filename.tsp>
 ```
 Will produce the output in [results](https://github.com/peveloper/travelling-salesman-problem/tree/master/results)
 
