@@ -1,5 +1,5 @@
 # Travelling-Salesman-Problem
-A simple Java implementation for the TSP.
+A simple Java implementation for the TSP using the ant-colony system.
 
 ## Usage
 Once compiled
@@ -10,7 +10,7 @@ Will produce the output in [results](https://github.com/peveloper/travelling-sal
 
 ## TODO
 - ~~Implement 2-OPT or similar.~~ **Done**
-- Implement Simulated Annealing
+- ~~Implement Ant-Colony.~~ **Done**
 
 ## Goal
 **Achieve a relative error from the best known results less than 1%**
