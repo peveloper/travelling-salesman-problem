@@ -2,18 +2,22 @@ package tsp.antcolony;
 
 public class NearestNeighbour {
 
-    public final static Tour getSolution(final Problem problem, final int starting) {
+    public static Tour improveTour (final TourInstance tourInstance, final int starting) {
+
         final Tour tour = new Tour();
-        final int size = problem.size();
         int tourLength = 0;
-        tour.addCity(problem.getCity(starting));
-        for (int i = 0; i<size-1; i++) {
-            final City nearest = tour.getLast().getNearest(problem, tour);
-            tourLength += tour.getLast().dist(nearest);
+
+        tour.addCity(tourInstance.getCity(starting));
+
+        for (int i = 0; i < tourInstance.size() - 1; i++) {
+            final City nearest = tour.getLast().getNearest(tourInstance, tour);
+            tourLength += tour.getLast().getDistanceTo(nearest);
             tour.addCity(nearest);
         }
-        tourLength += tour.getLast().dist(tour.getFirst());
+
+        tourLength += tour.getLast().getDistanceTo(tour.getFirst());
         tour.setTourLength(tourLength);
+
         return tour;
     }
 

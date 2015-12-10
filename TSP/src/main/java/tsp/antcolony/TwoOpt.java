@@ -1,54 +1,59 @@
 package tsp.antcolony;
 
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
 public class TwoOpt {
 
-    public final static void optimize(final Tour tour, final boolean firstImprovement) {
+    public static void improveTour (final Tour tour, final boolean firstGain) {
+
         final int distance = tour.getTourLength();
+        final ArrayList<City> path = tour.getTour();
         int bestGain = -1;
         int finalGain = 0;
-        final boolean first_improvement = firstImprovement;
-        final LinkedList<City> path = tour.getTour();
 
         while (bestGain != 0) {
             bestGain = 0;
-            City bestC = path.getFirst();
-            City bestB = null;
-            City last = path.getLast();
-            ListIterator<City> itr = path.listIterator(path.indexOf(bestC));
-            itr.add(path.getLast());
+            City bestI = path.get(0);
+            City bestJ = null;
+            City last = path.get(path.size() - 1);
+            
+            ListIterator<City> firstEdge = path.listIterator(path.indexOf(bestI));
+            firstEdge.add(path.get(path.size() - 1));
 
-            while (itr.hasNext()) {
-                final City a = itr.previous();
-                itr.next();
-                final City b = itr.next();
+            while (firstEdge.hasNext()) {
 
-                if (last == b || a == b) { break; }
+                final City a = firstEdge.previous();
+                firstEdge.next();
+                final City b = firstEdge.next();
 
-                ListIterator<City> itr2 = path.listIterator(path.indexOf(b) + 2);
-                while (itr2.hasNext()) {
-                    final City c = itr2.previous();
-                    itr2.next();
-                    final City d = itr2.next();
-                    int gain = (d.dist(b) + c.dist(a)) - (a.dist(b) + c.dist(d));
+                if (a.equals(b) || last.equals(b)) { break; }
+                ListIterator<City> secondEdge = path.listIterator(path.indexOf(b) + 2);
+
+                while (secondEdge.hasNext()) {
+                    final City c = secondEdge.previous();
+                    secondEdge.next();
+                    final City d = secondEdge.next();
+                    int gain = (d.getDistanceTo(b) + c.getDistanceTo(a)) - (a.getDistanceTo(b) + c.getDistanceTo(d));
                     if (gain < bestGain) {
                         bestGain = gain;
-                        bestB = b;
-                        bestC = c;
-                        if (first_improvement) break;
+                        bestJ = b;
+                        bestI = c;
+                        if (firstGain) break;
                     }
                 }
-                if (bestGain < 0 && first_improvement) break;
+
+                if (bestGain < 0 && firstGain) break;
             }
-            path.remove(path.getFirst());
+
+            path.remove(path.get(0));
             finalGain += bestGain;
-            if (bestB != null && bestC != null) {
-                int posb = path.indexOf(bestB);
-                int posc = path.indexOf(bestC);
+
+            if (bestJ != null && bestI != null) {
+                int posb = path.indexOf(bestJ);
+                int posc = path.indexOf(bestI);
                 List<City> l = path.subList(Math.min(posc, posb), Math.max(posc, posb)+1);
                 Collections.reverse(l);
             }

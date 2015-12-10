@@ -4,34 +4,35 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Ant extends Tour {
+
     private final AntColony colony;
     private final double taus[][];
     private ArrayList<City> citiesToVisit;
-    private final Random rnd;
+    private final Random random;
     private final int size;
 
     public Ant(final AntColony colony) {
         super();
-        this.rnd = colony.getRandom();
+        this.random = colony.getRandom();
 
         this.colony = colony;
         this.taus = colony.getPheromoneTrails();
-        this.size = colony.getNumOfCities();
+        this.size = colony.getCitiesSize();
 
         this.citiesToVisit = new ArrayList<City>(colony.getCities());
-        moveTo(citiesToVisit.get(rnd.nextInt(size)), true);
+        moveTo(citiesToVisit.get(random.nextInt(size)), true);
     }
 
     public void moveTo(final City city, boolean start) {
         if (!start) {
-            localUpdate(route.getLast(), city);
-            tourLength += route.getLast().dist(city);
+            localUpdate(route.get(route.size() - 1), city);
+            tourLength += route.get(route.size() - 1).getDistanceTo(city);
         }
         route.add(city);
         citiesToVisit.remove(city);
         if (citiesToVisit.isEmpty()) {
-            tourLength += city.dist(route.getFirst());
-            localUpdate(city,route.getFirst());
+            tourLength += city.getDistanceTo(route.get(0));
+            localUpdate(city,route.get(0));
         }
     }
 
@@ -48,15 +49,15 @@ public class Ant extends Tour {
      */
 
     public City nextCity() {
-        City max = null;
+        City max;
 
-        if (rnd.nextDouble() <= colony.getQ0()) {
+        if (random.nextDouble() <= colony.getQ0()) {
             double last = -1;
             max = citiesToVisit.get(0);
 
             for (final City city : citiesToVisit) {
-                double tmp = (getPheromoneTrail(route.getLast(), city)
-                             * Math.pow(getHeuristic(route.getLast(), city), colony.getBeta()));
+                double tmp = (getPheromoneTrail(route.get(route.size() - 1), city)
+                             * Math.pow(getHeuristic(route.get(route.size() - 1), city), colony.getBeta()));
                 if (tmp > last) {
                     last = tmp;
                     max = city;
@@ -68,13 +69,13 @@ public class Ant extends Tour {
             double params[] = new double[citiesToVisit.size()];
 
             for (int i = 0; i < citiesToVisit.size(); i++) {
-                params[i] = (getPheromoneTrail(route.getLast(), citiesToVisit.get(i))
-                            * Math.pow(getHeuristic(route.getLast(),citiesToVisit.get(i)), colony.getBeta()));
+                params[i] = (getPheromoneTrail(route.get(route.size() - 1), citiesToVisit.get(i))
+                            * Math.pow(getHeuristic(route.get(route.size() - 1), citiesToVisit.get(i)), colony.getBeta()));
                 sum += params[i];
             }
 
             int i = 0;
-            final double rand = rnd.nextDouble();
+            final double rand = random.nextDouble();
             double p = 0;
             max = citiesToVisit.get(params.length-1);
 
@@ -86,7 +87,7 @@ public class Ant extends Tour {
     }
 
     private double getHeuristic(final City a, final City b) {
-        return 1/new Double(a.dist(b));
+        return 1/new Double(a.getDistanceTo(b));
     }
 
     private double getPheromoneTrail(final City a, final City b) {

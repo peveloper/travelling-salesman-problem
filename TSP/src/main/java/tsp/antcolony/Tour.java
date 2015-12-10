@@ -1,17 +1,18 @@
 package tsp.antcolony;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Tour {
-    protected final LinkedList<City> route;
+
+    protected final ArrayList<City> route;
     protected int tourLength;
 
     public Tour() {
-        route = new LinkedList<City>();
+        route = new ArrayList<City>();
         tourLength = 0;
     }
 
-    public LinkedList<City> getTour() {
+    public ArrayList<City> getTour() {
         return route;
     }
 
@@ -20,19 +21,20 @@ public class Tour {
     }
 
     public City getFirst() {
-        return route.getFirst();
+        return route.get(0);
     }
 
     public City getLast() {
-        return route.getLast();
+        return route.get(route.size() - 1);
     }
 
     public String toString() {
-        String buffer = "[";
+        String buffer = "";
         for (final City c : route) {
-            buffer += c.toString()+" ";
+            buffer += c.toString() + "\n";
         }
-        return buffer + route.getFirst() + "]";
+        buffer += "\nTour length: " + tourLength;
+        return buffer;
     }
 
     public int getTourLength() {

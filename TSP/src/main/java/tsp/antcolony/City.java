@@ -6,36 +6,24 @@ public class City {
     private final int id;
     private final double x;
     private final double y;
-    private int dist[];
+    private int distances[];
 
-    public City(final int id, final double x, final double y, final int num_of_cities) {
+    public City(final int id, final double x, final double y, final int citiesSize) {
         this.id = id;
         this.x = x;
         this.y = y;
-        this.dist = new int[num_of_cities];
+        this.distances = new int[citiesSize];
     }
 
-    public final double getX() {
-        return x;
-    }
-
-    public final double getY() {
-        return y;
-    }
-
-    public final void setDist(final City c){
+    public final void setDistanceTo(final City c){
         double dx = this.x - c.x;
         double dy = this.y - c.y;
         int d = (int) Math.round(Math.sqrt(dx*dx + dy*dy));
-        dist[c.getId() - 1] = d;
+        distances[c.getId() - 1] = d;
     }
 
-    public int dist(final City c) {
-        return dist[c.getId() - 1];
-    }
-
-    public boolean knows(City c) {
-        return (dist[c.getId() - 1] != 0);
+    public int getDistanceTo(final City c) {
+        return distances[c.getId() - 1];
     }
 
     public int getId() {
@@ -46,13 +34,13 @@ public class City {
         return "" + id;
     }
 
-    public City getNearest(final Problem prob, final Tour sol) {
-        final ArrayList<City> cities = prob.cities();
+    public City getNearest(final TourInstance tour, final Tour sol) {
+        final ArrayList<City> cities = tour.cities();
         City nearest = null;
         int min = Integer.MAX_VALUE;
         for (int i = 0; i <cities.size(); i++) {
             City c = cities.get(i);
-            int tmp = dist[i];
+            int tmp = distances[i];
             if (min > tmp && !sol.contains(c) && c != nearest) {
                 min = tmp;
                 nearest = c;
