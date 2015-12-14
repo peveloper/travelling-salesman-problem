@@ -25,22 +25,22 @@ public class TwoOpt {
 
             while (firstEdge.hasNext()) {
 
-                final City a = firstEdge.previous();
+                final City i = firstEdge.previous();
                 firstEdge.next();
-                final City b = firstEdge.next();
+                final City j = firstEdge.next();
 
-                if (a.equals(b) || last.equals(b)) { break; }
-                ListIterator<City> secondEdge = path.listIterator(path.indexOf(b) + 2);
+                if (i.equals(j) || last.equals(j)) { break; }
+                ListIterator<City> secondEdge = path.listIterator(path.indexOf(j) + 2);
 
                 while (secondEdge.hasNext()) {
-                    final City c = secondEdge.previous();
+                    final City k = secondEdge.previous();
                     secondEdge.next();
-                    final City d = secondEdge.next();
-                    int gain = (d.getDistanceTo(b) + c.getDistanceTo(a)) - (a.getDistanceTo(b) + c.getDistanceTo(d));
+                    final City l = secondEdge.next();
+                    int gain = (l.getDistanceTo(j) + k.getDistanceTo(i)) - (i.getDistanceTo(j) + k.getDistanceTo(l));
                     if (gain < bestGain) {
                         bestGain = gain;
-                        bestJ = b;
-                        bestI = c;
+                        bestJ = j;
+                        bestI = k;
                         if (firstGain) break;
                     }
                 }
@@ -52,13 +52,13 @@ public class TwoOpt {
             finalGain += bestGain;
 
             if (bestJ != null && bestI != null) {
-                int posb = path.indexOf(bestJ);
-                int posc = path.indexOf(bestI);
-                List<City> l = path.subList(Math.min(posc, posb), Math.max(posc, posb)+1);
+                int posJ = path.indexOf(bestJ);
+                int posK = path.indexOf(bestI);
+                List<City> l = path.subList(Math.min(posK, posJ), Math.max(posK, posJ) + 1);
                 Collections.reverse(l);
             }
         }
-        tour.setTourLength(distance+finalGain);
+        tour.setTourLength(distance + finalGain);
     }
 
 }

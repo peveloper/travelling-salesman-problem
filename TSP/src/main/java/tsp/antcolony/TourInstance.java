@@ -10,7 +10,7 @@ public class TourInstance {
 
     public TourInstance(int citiesSize, int bestKnownSolution) {
         this.citiesSize = citiesSize;
-        this.cities = new ArrayList<>(citiesSize);
+        this.cities = new ArrayList<City>(citiesSize);
         this.bestKnownSolution = bestKnownSolution;
     }
 

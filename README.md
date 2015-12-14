@@ -2,11 +2,11 @@
 A simple Java implementation for the TSP using the ant-colony system.
 
 ## Usage
-Once compiled
 ```
-$ java Main <problem_filename.tsp>
+$ mvn compile
+$ mvn -q exec:java -Dexec.mainClass="tsp.antcolony.Main" -Dexec.args="<PROBLEM_FILENAME.TSP>"
 ```
-Will produce the output in [results](https://github.com/peveloper/travelling-salesman-problem/tree/master/results)
+Will produce the output in [results](https://github.com/peveloper/travelling-salesman-problem/tree/master/results) directory.
 
 ## TODO
 - ~~Implement 2-OPT or similar.~~ **Done**

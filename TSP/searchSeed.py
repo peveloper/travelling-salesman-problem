@@ -8,7 +8,7 @@ problem = sys.argv[1]
 output = sys.argv[2]
 
 bestSeed = -1
-bestErr = 2
+bestErr = 5
 bestTime = 1
 
 
@@ -29,7 +29,7 @@ with open(output, "a") as file:
 
 while True:
     start = time.time()
-    retValues = os.popen("java -cp target/classes/antcolony Main " + problem ).readlines()
+    retValues = os.popen("mvn -q exec:java -Dexec.mainClass=\"tsp.antcolony.Main\" -Dexec.args=\""+problem+"\"").readlines()
     end = time.time()
     err = float(retValues[0].strip())
     seed = retValues[1].strip()

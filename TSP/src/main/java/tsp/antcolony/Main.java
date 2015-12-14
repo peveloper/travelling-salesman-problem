@@ -17,11 +17,12 @@ public class Main {
         TourInstance tourInstance;
         Random random;
         String filePath;
+        String output = "";
 
         // default values if 1st argument is not passed
         int bestKnownResult = 6110;
         long seed = System.currentTimeMillis();
-        boolean firstGain = true;
+        boolean firstGain = false;
 
         if (args.length > 0) {
             filePath = args[0];
@@ -52,16 +53,17 @@ public class Main {
                 tourInstance.updateDistances();
                 long start = System.nanoTime();
                 random = new Random(seed);
-                System.out.println("Solving: " + inputFile + "\n");
+                System.out.println("Solving " + inputFile + "...\n");
                 Tour initialTour = NearestNeighbour.improveTour(tourInstance, 1);
                 Tour finalTour = new AntColony(tourInstance, initialTour, 10, random, start, firstGain).improveTour();
                 retrieveResult(finalTour);
-                System.out.println("\nTotal elapsed time: " +
-                        Math.round((System.nanoTime() - start) * Math.pow(10, -6)) + " ms");
-                System.out.println("Solved: "+ inputFile + ". Results can be found at " +
-                        resultsDirectory + inputFile.split("\\.")[0] + "/" + inputFile.split("\\.")[0] + ".txt");
-                System.out.println("Seed used: " + seed + "l\nError: " +
-                        (100 - finalTour.getTourLength() * 100 / new Double (bestKnownResult)) + "%");
+                output += "Total elapsed time: " +
+                        Math.round((System.nanoTime() - start) * Math.pow(10, -6)) + " ms\n" +
+                        "Results can be found at " +
+                        resultsDirectory + inputFile.split("\\.")[0] + "/" + inputFile.split("\\.")[0] + ".txt";
+                double error = ((double) (finalTour.getTourLength() - bestKnownResult)/(double) bestKnownResult) * 100;
+
+                System.out.println(error + "\n" + seed);
 
 
         } catch (ParseException e) {

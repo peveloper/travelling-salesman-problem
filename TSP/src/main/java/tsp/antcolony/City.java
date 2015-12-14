@@ -15,15 +15,15 @@ public class City {
         this.distances = new int[citiesSize];
     }
 
-    public final void setDistanceTo(final City c){
-        double dx = this.x - c.x;
-        double dy = this.y - c.y;
+    public final void setDistanceTo(final City city){
+        double dx = this.x - city.x;
+        double dy = this.y - city.y;
         int d = (int) Math.round(Math.sqrt(dx*dx + dy*dy));
-        distances[c.getId() - 1] = d;
+        distances[city.getId() - 1] = d;
     }
 
-    public int getDistanceTo(final City c) {
-        return distances[c.getId() - 1];
+    public int getDistanceTo(final City city) {
+        return distances[city.getId() - 1];
     }
 
     public int getId() {
@@ -39,11 +39,11 @@ public class City {
         City nearest = null;
         int min = Integer.MAX_VALUE;
         for (int i = 0; i <cities.size(); i++) {
-            City c = cities.get(i);
+            City city = cities.get(i);
             int tmp = distances[i];
-            if (min > tmp && !sol.contains(c) && c != nearest) {
+            if (min > tmp && !sol.contains(city) && city != nearest) {
                 min = tmp;
-                nearest = c;
+                nearest = city;
             }
         }
         return nearest;

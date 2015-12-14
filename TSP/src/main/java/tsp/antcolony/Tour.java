@@ -16,8 +16,8 @@ public class Tour {
         return route;
     }
 
-    public void addCity(final City c) {
-        route.add(c);
+    public void addCity(final City city) {
+        route.add(city);
     }
 
     public City getFirst() {
@@ -45,8 +45,8 @@ public class Tour {
         this.tourLength = tourLength;
     }
 
-    public boolean contains(final City c) {
-        return route.contains(c);
+    public boolean contains(final City city) {
+        return route.contains(city);
     }
 
 

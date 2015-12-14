@@ -6,8 +6,8 @@ import java.util.Random;
 public class Ant extends Tour {
 
     private final AntColony colony;
-    private final double taus[][];
     private ArrayList<City> citiesToVisit;
+    private final double taus[][];
     private final Random random;
     private final int size;
 
@@ -86,12 +86,12 @@ public class Ant extends Tour {
         return max;
     }
 
-    private double getHeuristic(final City a, final City b) {
-        return 1/new Double(a.getDistanceTo(b));
+    private double getHeuristic(final City i, final City j) {
+        return 1/((double) (i.getDistanceTo(j)));
     }
 
-    private double getPheromoneTrail(final City a, final City b) {
-        return taus[a.getId() - 1][b.getId() - 1];
+    private double getPheromoneTrail(final City i, final City j) {
+        return taus[i.getId() - 1][j.getId() - 1];
     }
 
 }

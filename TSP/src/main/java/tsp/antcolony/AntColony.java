@@ -35,12 +35,12 @@ public class AntColony {
         this.beta = 2;
         this.alpha = 0.1d;
         this.citiesSize = tourInstance.size();
-        this.tau0 = 1 / new Double(tour.getTourLength() * citiesSize);
+        this.tau0 = 1 / ((double)(tour.getTourLength() * citiesSize));
         this.ro = 0.1d;
 
         this.tourInstance = tourInstance;
         this.pheromoneMatrix = new double[citiesSize][citiesSize];
-        this.ants = new ArrayList<>(colonySize);
+        this.ants = new ArrayList<Ant>(colonySize);
         this.colonySize = colonySize;
         this.cities = tourInstance.cities();
         this.random = random;
@@ -140,7 +140,7 @@ public class AntColony {
             if (bestSolutionEver == null || bestAnt.getTourLength() <= bestSolutionEver.getTourLength()) {
                 bestSolutionEver = bestAnt;
 
-                System.out.println("Best distance so far: " + bestSolutionEver.getTourLength());
+//                System.out.println("Best distance so far: " + bestSolutionEver.getTourLength());
             }
 
             ants.clear();
